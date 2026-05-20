@@ -1,6 +1,6 @@
 ---
 name: php-course-notes
-description: "用于《WEB项目应用》PHP课程课件要点与作业清单。只要用户提到作业/提交/截图/表编号(表1-2/1-3/2-3/3-5/3-6/3-7/7-11~7-15/8-11/9-6)，或提到User/Stu/Te/ApiResponse/index.php、Postman/Apifox、PDO/Composer/命名空间/RESTful/登录认证/注销/修改密码/Session/Authorization/数据库设计与创建等关键词，都必须触发并查阅本skill。若需要精确细节或原始示例，再去打开对应PPT。"
+description: "用于《WEB项目应用》PHP课程课件要点与作业清单。只要用户提到作业/提交/截图/表编号(表1-2/1-3/2-3/3-5/3-6/3-7/7-11~7-15/8-11/9-6)，或提到User/Stu/Te/ApiResponse/index.php、Postman/Apifox、PDO/Composer/命名空间/RESTful/登录认证/注销/修改密码/Session/Authorization/教学任务/任务查询/Task/缓存控制/强缓存/协商缓存/Cache-Control/If-Modified-Since/304/学年学期/fromterm/toterm/数据库设计与创建等关键词，都必须触发并查阅本skill。若需要精确细节或原始示例，再去打开对应PPT。"
 ---
 
 # PHP课程课件与作业速查
@@ -50,6 +50,7 @@ description: "用于《WEB项目应用》PHP课程课件要点与作业清单。
 - 课件09 PDO连接工具类的构建 -> references/09-pdo-db-class.md
 - 课件10 登录认证功能的实现 -> references/10-auth-session.md
 - 课件11 注销及修改密码功能的实现 -> references/11-logout-change-pwd.md
+- 课件12 教学任务查询功能的实现 -> references/12-teaching-task-query.md
 
 ## 关键词到课件的快速定位
 - 环境搭建/WAMP/Wampserver/VS Code/虚拟主机/hosts -> 课件01
@@ -63,3 +64,4 @@ description: "用于《WEB项目应用》PHP课程课件要点与作业清单。
 - DB工具类/单例/事务连接/表8-11 -> 课件09
 - Session/登录认证/表9-6/Postman登录预览 -> 课件10
 - 注销/退出登录/logOut/环境变量/Authorization/修改密码/changePwd/doLogOut.php/doChangePwd.php -> 课件11
+- 教学任务/任务查询/Task/search/缓存控制/强缓存/协商缓存/Cache-Control/If-Modified-Since/304/fromterm/toterm/学年学期 -> 课件12
