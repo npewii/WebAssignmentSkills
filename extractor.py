@@ -21,7 +21,6 @@ def build_parser() -> argparse.ArgumentParser:
 
     parser.add_argument(
         '--include-file-pattern',
-        action='append',
         nargs='+',
         default=[],
         help='file patterns to include',
@@ -29,7 +28,6 @@ def build_parser() -> argparse.ArgumentParser:
 
     parser.add_argument(
         '--exclude-file-pattern',
-        action='append',
         nargs='+',
         default=[],
         help='file patterns to exclude',
@@ -37,7 +35,6 @@ def build_parser() -> argparse.ArgumentParser:
 
     parser.add_argument(
         '--exclude-dir-pattern',
-        action='append',
         nargs='+',
         default=[],
         help='directory patterns to exclude',
