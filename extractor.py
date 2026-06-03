@@ -124,7 +124,7 @@ def iter_files(
             yield path
 
 
-def extract(path: Path, strip: bool) -> str:
+def extract(path: Path, strip: bool) -> str | None:
     try:
         with path.open('r', encoding='utf-8') as f:
             if not strip:
@@ -132,7 +132,7 @@ def extract(path: Path, strip: bool) -> str:
 
             return ''.join(stripped + '\n' for line in f if (stripped := line.rstrip()))
     except UnicodeDecodeError:
-        return ''
+        return None
 
 
 def get_config_from_args(args: argparse.Namespace) -> ExtractorConfig:
@@ -180,8 +180,10 @@ def build_content(config: ExtractorConfig) -> str:
         config.max_depth,
     )):
         content = extract(path, config.strip)
-        if not content:
+
+        if content is None:
             continue
+
         parts.append(f'========== {path} ==========\n')
         parts.append(content)
         parts.append('\n')
