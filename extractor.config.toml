@@ -1,0 +1,14 @@
+include_file_pattern = [
+    "*.php",
+    "*.sql"
+]
+
+exclude_dir_pattern = [
+    "vendor",
+    "skills",
+    ".git",
+    "*tmp*",
+    "WebAssignmentSkills"
+]
+
+strip = true

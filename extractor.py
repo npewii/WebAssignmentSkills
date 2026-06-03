@@ -2,8 +2,22 @@ import argparse
 import sys
 import fnmatch
 import pyperclip
+import tomllib
+from dataclasses import dataclass
 from pathlib import Path
 from collections.abc import Iterator
+
+CONFIG_FILE = Path('extractor.config.toml')
+
+
+@dataclass
+class ExtractorConfig:
+    include_file_pattern: list[str]
+    exclude_file_pattern: list[str]
+    exclude_dir_pattern: list[str]
+    max_depth: int
+    strip: bool
+    directories: list[Path]
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -15,39 +29,49 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         'directories',
         nargs='*',
-        default=['.'],
+        default=[Path('.')],
+        type=Path,
         help='directories to search',
     )
 
     parser.add_argument(
-        '--include-file-pattern',
+        '-i',
+        '--include',
+        dest='include_file_pattern',
         nargs='+',
-        default=[],
+        default=['*'],
         help='file patterns to include',
     )
 
     parser.add_argument(
-        '--exclude-file-pattern',
+        '-e',
+        '--exclude',
+        dest='exclude_file_pattern',
         nargs='+',
         default=[],
         help='file patterns to exclude',
     )
 
     parser.add_argument(
-        '--exclude-dir-pattern',
+        '-E',
+        '--exclude-dir',
+        dest='exclude_dir_pattern',
         nargs='+',
         default=[],
         help='directory patterns to exclude',
     )
 
     parser.add_argument(
-        '--max-depth',
+        '-d',
+        '--depth',
+        dest='max_depth',
         type=int,
         default=sys.maxsize,
         help='maximum directory depth',
     )
 
     parser.add_argument(
+        '-s',
         '--strip',
         action='store_true',
         help='strip trailing whitespace and blank lines',
@@ -64,20 +88,23 @@ def iter_files(
     max_depth: int
 ) -> Iterator[Path]:
     for directory in directories:
+        if not directory.is_dir():
+            sys.exit(f'{directory}: not a directory')
+
         root_depth = len(directory.parts)
 
         for path in directory.rglob('*'):
-            depth = len(path.parts) - root_depth
-
-            if depth > max_depth:
+            if len(path.parts) - root_depth > max_depth:
                 continue
 
             if not path.is_file():
                 continue
 
+            relative = path.relative_to(directory)
+
             if any(
-                fnmatch.fnmatch(parent.name, pattern)
-                for parent in path.parents
+                fnmatch.fnmatch(part, pattern)
+                for part in relative.parts[:-1]
                 for pattern in exclude_dir_pattern
             ):
                 continue
@@ -103,40 +130,73 @@ def extract(path: Path, strip: bool) -> str:
             if not strip:
                 return f.read()
 
-            parts: list[str] = []
-
-            for line in f:
-                line = line.rstrip()
-
-                if not line:
-                    continue
-
-                parts.append(line + '\n')
-
-            return ''.join(parts)
-
+            return ''.join(stripped + '\n' for line in f if (stripped := line.rstrip()))
     except UnicodeDecodeError:
         return ''
+
+
+def get_config_from_args(args: argparse.Namespace) -> ExtractorConfig:
+    return ExtractorConfig(
+        include_file_pattern=args.include_file_pattern,
+        exclude_file_pattern=args.exclude_file_pattern,
+        exclude_dir_pattern=args.exclude_dir_pattern,
+        max_depth=args.max_depth,
+        strip=args.strip,
+        directories=args.directories,
+    )
+
+
+def load_config_from_toml(args: argparse.Namespace) -> ExtractorConfig:
+    try:
+        with CONFIG_FILE.open('rb') as f:
+            data = tomllib.load(f)
+    except FileNotFoundError:
+        return get_config_from_args(args)
+    except tomllib.TOMLDecodeError as e:
+        sys.exit(f'config parse error: {e}')
+
+    return ExtractorConfig(
+        include_file_pattern=data.get(
+            'include_file_pattern', args.include_file_pattern),
+        exclude_file_pattern=data.get(
+            'exclude_file_pattern', args.exclude_file_pattern),
+        exclude_dir_pattern=data.get(
+            'exclude_dir_pattern', args.exclude_dir_pattern),
+        max_depth=data.get('max_depth', args.max_depth),
+        strip=data.get('strip', args.strip),
+        directories=[Path(d) for d in data['directories']
+                     ] if 'directories' in data else args.directories,
+    )
+
+
+def build_content(config: ExtractorConfig) -> str:
+    parts: list[str] = []
+
+    for path in sorted(iter_files(
+        config.directories,
+        config.include_file_pattern,
+        config.exclude_file_pattern,
+        config.exclude_dir_pattern,
+        config.max_depth,
+    )):
+        content = extract(path, config.strip)
+        if not content:
+            continue
+        parts.append(f'========== {path} ==========\n')
+        parts.append(content)
+        parts.append('\n')
+
+    return ''.join(parts)
 
 
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
 
-    result: list[str] = []
+    config = get_config_from_args(args) if len(
+        sys.argv) > 1 else load_config_from_toml(args)
 
-    for path in iter_files(
-        [Path(p) for p in args.directories],
-        args.include_file_pattern or ['*'],
-        args.exclude_file_pattern,
-        args.exclude_dir_pattern,
-        args.max_depth
-    ):
-        result.append(f'========== {path.name} ==========\n')
-        result.append(extract(path, args.strip))
-        result.append('\n')
-
-    content: str = ''.join(result)
+    content = build_content(config)
 
     print(content)
     pyperclip.copy(content)
