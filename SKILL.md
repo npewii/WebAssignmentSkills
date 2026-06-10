@@ -1,6 +1,6 @@
 ---
 name: php-course-notes
-description: "用于《WEB项目应用》PHP课程课件要点与作业清单。只要用户提到作业/提交/截图/表编号(表1-2/1-3/2-3/3-5/3-6/3-7/7-11~7-15/8-11/9-6)，或提到User/Stu/Te/ApiResponse/index.php、Postman/Apifox、PDO/Composer/命名空间/RESTful/登录认证/注销/修改密码/Session/Authorization/教学任务/任务查询/Task/缓存控制/强缓存/协商缓存/Cache-Control/If-Modified-Since/304/gmdate/TimeTool/数据库访问控制/最小权限/数据库用户/权限/只读/读+改/读+插入/学年学期/fromterm/toterm/数据库设计与创建/反向代理/正向代理/Apache/虚拟主机/httpd-vhosts.conf/mod_proxy/路径转发/内部重定向/外部重定向/.htaccess/RewriteEngine/RewriteRule/路由分发/Router/Route/统一入口/负载均衡/sessions/users/tasks/scores等关键词，都必须触发并查阅本skill。若需要精确细节或原始示例，再去打开对应PPT。"
+description: "用于《WEB项目应用》PHP课程课件要点与作业清单。只要用户提到作业/提交/截图/表编号(表1-2/1-3/2-3/3-5/3-6/3-7/7-11~7-15/8-11/9-6)，或提到User/Stu/Te/ApiResponse/index.php、Postman/Apifox、PDO/Composer/命名空间/RESTful/登录认证/注销/修改密码/Session/Authorization/教学任务/任务查询/Task/缓存控制/强缓存/协商缓存/Cache-Control/If-Modified-Since/304/gmdate/TimeTool/数据库访问控制/最小权限/数据库用户/权限/只读/读+改/读+插入/学年学期/fromterm/toterm/数据库设计与创建/反向代理/正向代理/Apache/虚拟主机/httpd-vhosts.conf/mod_proxy/路径转发/内部重定向/外部重定向/.htaccess/RewriteEngine/RewriteRule/路由分发/Router/Route/统一入口/负载均衡/sessions/users/tasks/scores/dealSessions/dealUsers/dealTasks/doLogin/dologout/doChangePwd/doSearchTask/InputTool/checkId/checkPwd/checkRole/用户登录/用户注销/修改密码/教学任务查询等关键词，都必须触发并查阅本skill。若需要精确细节或原始示例，再去打开对应PPT。"
 ---
 
 # PHP课程课件与作业速查
@@ -53,6 +53,7 @@ description: "用于《WEB项目应用》PHP课程课件要点与作业清单。
 - 课件12 教学任务查询功能的实现 -> references/12-teaching-task-query.md
 - 课件13 缓存控制和数据库访问控制 -> references/13-cache-control-db-access.md
 - 课件14 路由分发功能的实现1 -> references/14-routing.md
+- 课件15 路由分发功能的实现2 -> references/15-routing-2.md
 
 ## 关键词到课件的快速定位
 - 环境搭建/WAMP/Wampserver/VS Code/虚拟主机/hosts -> 课件01
@@ -72,3 +73,6 @@ description: "用于《WEB项目应用》PHP课程课件要点与作业清单。
 - 反向代理/正向代理/Apache/虚拟主机/httpd-vhosts.conf/mod_proxy/ProxyPass/路径转发/统一入口 -> 课件14
 - 内部重定向/外部重定向/.htaccess/RewriteEngine/RewriteRule -> 课件14
 - 路由分发/Router/Route/版本号/sessions/users/tasks/scores -> 课件14
+- dealSessions/dealUsers/dealTasks/doLogin/dologout/doChangePwd/doSearchTask -> 课件15
+- InputTool/checkId/checkPwd/checkRole/dealJson -> 课件15
+- 用户登录/用户注销/修改密码/教学任务查询/Route类实现/路由分发实现 -> 课件15
